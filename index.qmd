@@ -11,36 +11,6 @@ execute:
 
 **Choose R or Python and delete the other code chunk.**
 
-## R Code
-
-```{r}
-#| echo: true
-library(tidyverse)
-library(broom)
-
-# Data with known true relationships: Anxiety = Stress + 0.1 × Time
-observDF <- tribble(
-  ~Stress, ~StressSurvey, ~Time, ~Anxiety,
-  0,0,0,0,
-  0,0,1,0.1,
-  0,0,1,0.1,
-  1,3,1,1.1,
-  1,3,1,1.1,
-  1,3,1,1.1,
-  2,6,2,2.2,
-  2,6,2,2.2,
-  2,6,2,2.2,
-  8,9,2,8.2,
-  8,9,2,8.2,
-  8,9,2.1,8.21,
-  12,12,2.2,12.22,
-  12,12,2.2,12.22,
-  12,12,2.2,12.22
-)
-
-observDF
-```
-
 ## Python Code
 
 ```{python}
@@ -68,3 +38,153 @@ print(observDF)
 ## Your Analysis
 
 Follow the challenge instructions from your course to complete your analysis.
+
+### Bivariate Regression: Anxiety on StressSurvey
+
+```{python}
+#| echo: true
+# Bivariate regression of Anxiety on StressSurvey
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+import statsmodels.api as sm
+
+# Prepare data for regression
+X = observDF[['StressSurvey']]  # Independent variable
+y = observDF['Anxiety']         # Dependent variable
+
+# Method 1: Using scikit-learn
+lr = LinearRegression()
+lr.fit(X, y)
+y_pred = lr.predict(X)
+
+# Get coefficients
+intercept_sklearn = lr.intercept_
+slope_sklearn = lr.coef_[0]
+r2_sklearn = r2_score(y, y_pred)
+
+print("=== Scikit-learn Results ===")
+print(f"Intercept (β₀): {intercept_sklearn:.4f}")
+print(f"Slope (β₁): {slope_sklearn:.4f}")
+print(f"R²: {r2_sklearn:.4f}")
+
+# Method 2: Using statsmodels for more detailed statistics
+X_sm = sm.add_constant(X)  # Add intercept term
+model = sm.OLS(y, X_sm).fit()
+print("\n=== Statsmodels Results ===")
+print(model.summary())
+
+# Calculate the true relationship for comparison
+# From the data description: Anxiety = Stress + 0.1 × Time
+# But we're regressing Anxiety on StressSurvey, not Stress
+# Let's see what the true relationship should be
+
+# Calculate true Anxiety values based on the formula
+true_anxiety = observDF['Stress'] + 0.1 * observDF['Time']
+print(f"\n=== True vs Predicted Comparison ===")
+print(f"True Anxiety values: {true_anxiety.values}")
+print(f"Predicted Anxiety values: {y_pred}")
+print(f"Mean Absolute Error: {np.mean(np.abs(y - y_pred)):.4f}")
+
+# Visualize the relationship
+plt.figure(figsize=(10, 6))
+plt.scatter(observDF['StressSurvey'], observDF['Anxiety'], alpha=0.7, label='Actual Data')
+plt.plot(observDF['StressSurvey'], y_pred, color='red', linewidth=2, label=f'Regression Line (y = {slope_sklearn:.3f}x + {intercept_sklearn:.3f})')
+plt.xlabel('StressSurvey')
+plt.ylabel('Anxiety')
+plt.title('Bivariate Regression: Anxiety on StressSurvey')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+### Analysis and Inferences
+
+```{python}
+#| echo: true
+# Analysis of the regression results
+print("=== REGRESSION ANALYSIS ===")
+print(f"Estimated equation: Anxiety = {slope_sklearn:.4f} × StressSurvey + {intercept_sklearn:.4f}")
+print(f"The model explains {r2_sklearn:.1%} of the variance in Anxiety")
+
+# Compare with true relationship
+print(f"\n=== COMPARISON WITH TRUE RELATIONSHIP ===")
+print("True relationship: Anxiety = Stress + 0.1 × Time")
+print("But we're regressing on StressSurvey, not Stress directly")
+print("StressSurvey appears to be a scaled version of Stress (multiplied by 3)")
+
+# Check the relationship between Stress and StressSurvey
+stress_stresssurvey_corr = observDF['Stress'].corr(observDF['StressSurvey'])
+print(f"Correlation between Stress and StressSurvey: {stress_stresssurvey_corr:.4f}")
+
+# If StressSurvey = 3 × Stress, then the true coefficient should be 1/3 ≈ 0.333
+# (since Anxiety = Stress + 0.1×Time, and if StressSurvey = 3×Stress, then Stress = StressSurvey/3)
+expected_slope = 1/3
+print(f"Expected slope if StressSurvey = 3 × Stress: {expected_slope:.4f}")
+print(f"Actual estimated slope: {slope_sklearn:.4f}")
+print(f"Difference: {abs(slope_sklearn - expected_slope):.4f}")
+
+# The Time component adds some noise but should average out
+time_effect = 0.1 * observDF['Time'].mean()
+print(f"Average Time effect: {time_effect:.4f}")
+```
+
+## 75% Questions: 
+## 1. The estimated coefficients are a Slope of 0.3333, which is exactly what we got in this example. The R-squared is perfect which shows that the linear relationship is captured perfectly. There is a slight difference in the intercept as it was about 0.033 instead of an expected 0.02. This is because the average Time effect is 0.1 which is added to the intercept.
+
+```{python}
+#| echo: true
+# Scatter plot with regression line: StressSurvey vs Anxiety
+plt.figure(figsize=(10, 8))
+
+# Create scatter plot
+plt.scatter(observDF['StressSurvey'], observDF['Anxiety'], 
+           alpha=0.7, s=60, color='steelblue', edgecolors='navy', linewidth=0.5)
+
+# Add regression line
+plt.plot(observDF['StressSurvey'], y_pred, 
+         color='red', linewidth=3, linestyle='-', 
+         label=f'Regression Line: y = {slope_sklearn:.4f}x + {intercept_sklearn:.4f}')
+
+# Add perfect fit line for comparison (if StressSurvey = 3×Stress)
+perfect_fit_x = np.linspace(0, 12, 100)
+perfect_fit_y = perfect_fit_x / 3  # Since Anxiety = Stress + 0.1×Time, and Stress = StressSurvey/3
+plt.plot(perfect_fit_x, perfect_fit_y, 
+         color='green', linewidth=2, linestyle='--', alpha=0.7,
+         label='Theoretical Perfect Fit: y = x/3')
+
+# Customize the plot
+plt.xlabel('StressSurvey', fontsize=12, fontweight='bold')
+plt.ylabel('Anxiety', fontsize=12, fontweight='bold')
+plt.title('Relationship Between StressSurvey and Anxiety\nwith Regression Line', 
+          fontsize=14, fontweight='bold', pad=20)
+
+# Add grid and legend
+plt.grid(True, alpha=0.3, linestyle='-', linewidth=0.5)
+plt.legend(fontsize=10, loc='upper left')
+
+# Add R² and correlation info as text
+plt.text(0.05, 0.95, f'R² = {r2_sklearn:.6f}\nCorrelation = {observDF["StressSurvey"].corr(observDF["Anxiety"]):.6f}', 
+         transform=plt.gca().transAxes, fontsize=10, 
+         verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
+
+# Set axis limits and ticks
+plt.xlim(-0.5, 12.5)
+plt.ylim(-0.2, 12.5)
+plt.xticks(range(0, 13, 2))
+plt.yticks(range(0, 13, 2))
+
+# Improve layout
+plt.tight_layout()
+plt.show()
+
+# Additional analysis for the plot
+print("=== PLOT ANALYSIS ===")
+print(f"Number of data points: {len(observDF)}")
+print(f"Data points per StressSurvey value: {len(observDF) // len(observDF['StressSurvey'].unique())}")
+print(f"StressSurvey range: {observDF['StressSurvey'].min()} to {observDF['StressSurvey'].max()}")
+print(f"Anxiety range: {observDF['Anxiety'].min():.2f} to {observDF['Anxiety'].max():.2f}")
+print(f"Residuals (actual - predicted): {np.round(y - y_pred, 6)}")
+print(f"Max absolute residual: {np.max(np.abs(y - y_pred)):.6f}")
+```
+
+## 2. On this new scatter plot, the regression analysis shows issues that linear regression cannot capture. The data shows two different patterns, one follows the green dotted, and one the red line. I think this is misleading since the correlation coefficient is 0.949 which looks very impressive. But the regression line actually misses most of the data points. This shows that you cannot blindly trust correlation coefficients. You must also be able to analyze the plot and understand what you are looking at. 
