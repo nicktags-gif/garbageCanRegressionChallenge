@@ -129,7 +129,10 @@ print(f"Average Time effect: {time_effect:.4f}")
 ```
 
 ## 75% Questions: 
-## 1. The estimated coefficients are a Slope of 0.3333, which is exactly what we got in this example. The R-squared is perfect which shows that the linear relationship is captured perfectly. There is a slight difference in the intercept as it was about 0.033 instead of an expected 0.02. This is because the average Time effect is 0.1 which is added to the intercept.
+
+### 1. What are the estimated coefficients?
+
+The estimated coefficients are a Slope of 0.3333, which is exactly what we got in this example. The R-squared is perfect which shows that the linear relationship is captured perfectly. There is a slight difference in the intercept as it was about 0.033 instead of an expected 0.02. This is because the average Time effect is 0.1 which is added to the intercept.
 
 ```{python}
 #| echo: true
@@ -187,4 +190,6 @@ print(f"Residuals (actual - predicted): {np.round(y - y_pred, 6)}")
 print(f"Max absolute residual: {np.max(np.abs(y - y_pred)):.6f}")
 ```
 
-## 2. On this new scatter plot, the regression analysis shows issues that linear regression cannot capture. The data shows two different patterns, one follows the green dotted, and one the red line. I think this is misleading since the correlation coefficient is 0.949 which looks very impressive. But the regression line actually misses most of the data points. This shows that you cannot blindly trust correlation coefficients. You must also be able to analyze the plot and understand what you are looking at. 
+### 2. Analysis of the scatter plot
+
+On this new scatter plot, the regression analysis shows issues that linear regression cannot capture. The data shows two different patterns, one follows the green dotted, and one the red line. I think this is misleading since the correlation coefficient is 0.949 which looks very impressive. But the regression line actually misses most of the data points. This shows that you cannot blindly trust correlation coefficients. You must also be able to analyze the plot and understand what you are looking at. 
