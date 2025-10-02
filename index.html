@@ -104,7 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Choose R or Python and delete the other code chunk.</strong></p>
 <section id="python-code" class="level2">
 <h2 class="anchored" data-anchor-id="python-code">Python Code</h2>
-<div id="c9d2dca3" class="cell" data-execution_count="1">
+<div id="7d948953" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -148,7 +148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Follow the challenge instructions from your course to complete your analysis.</p>
 <section id="bivariate-regression-anxiety-on-stresssurvey" class="level3">
 <h3 class="anchored" data-anchor-id="bivariate-regression-anxiety-on-stresssurvey">Bivariate Regression: Anxiety on StressSurvey</h3>
-<div id="f5350446" class="cell" data-execution_count="2">
+<div id="b71ffc77" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bivariate regression of Anxiety on StressSurvey</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score, mean_squared_error</span>
@@ -214,7 +214,7 @@ Dep. Variable:                Anxiety   R-squared:                       0.901
 Model:                            OLS   Adj. R-squared:                  0.893
 Method:                 Least Squares   F-statistic:                     118.4
 Date:                Thu, 02 Oct 2025   Prob (F-statistic):           6.68e-08
-Time:                        17:10:01   Log-Likelihood:                -27.079
+Time:                        17:15:10   Log-Likelihood:                -27.079
 No. Observations:                  15   AIC:                             58.16
 Df Residuals:                      13   BIC:                             59.57
 Df Model:                           1                                         
@@ -258,7 +258,7 @@ kurtosistest only valid for n&gt;=20 ... continuing anyway, n=15
 </section>
 <section id="analysis-and-inferences" class="level3">
 <h3 class="anchored" data-anchor-id="analysis-and-inferences">Analysis and Inferences</h3>
-<div id="6ac0851e" class="cell" data-execution_count="3">
+<div id="33a9815a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analysis of the regression results</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== REGRESSION ANALYSIS ==="</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Estimated equation: Anxiety = </span><span class="sc">{</span>slope_sklearn<span class="sc">:.4f}</span><span class="ss"> × StressSurvey + </span><span class="sc">{</span>intercept_sklearn<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
@@ -300,6 +300,102 @@ Difference: 0.7137
 Average Time effect: 0.1580</code></pre>
 </div>
 </div>
+</section>
+</section>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">75% Questions:</h2>
+<section id="what-are-the-estimated-coefficients" class="level3">
+<h3 class="anchored" data-anchor-id="what-are-the-estimated-coefficients">1. What are the estimated coefficients?</h3>
+<p>The estimated coefficients are a Slope of 0.3333, which is exactly what we got in this example. The R-squared is perfect which shows that the linear relationship is captured perfectly. There is a slight difference in the intercept as it was about 0.033 instead of an expected 0.02. This is because the average Time effect is 0.1 which is added to the intercept.</p>
+<div id="a0939182" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot with regression line: StressSurvey vs Anxiety</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create scatter plot</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.scatter(observDF[<span class="st">'StressSurvey'</span>], observDF[<span class="st">'Anxiety'</span>], </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>           alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">60</span>, color<span class="op">=</span><span class="st">'steelblue'</span>, edgecolors<span class="op">=</span><span class="st">'navy'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add regression line</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>plt.plot(observDF[<span class="st">'StressSurvey'</span>], y_pred, </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>         color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">3</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="ss">f'Regression Line: y = </span><span class="sc">{</span>slope_sklearn<span class="sc">:.4f}</span><span class="ss">x + </span><span class="sc">{</span>intercept_sklearn<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add perfect fit line for comparison (if StressSurvey = 3×Stress)</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>perfect_fit_x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">100</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>perfect_fit_y <span class="op">=</span> perfect_fit_x <span class="op">/</span> <span class="dv">3</span>  <span class="co"># Since Anxiety = Stress + 0.1×Time, and Stress = StressSurvey/3</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>plt.plot(perfect_fit_x, perfect_fit_y, </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>         color<span class="op">=</span><span class="st">'green'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">'Theoretical Perfect Fit: y = x/3'</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Customize the plot</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'StressSurvey'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Anxiety'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Relationship Between StressSurvey and Anxiety</span><span class="ch">\n</span><span class="st">with Regression Line'</span>, </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>          fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add grid and legend</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>plt.legend(fontsize<span class="op">=</span><span class="dv">10</span>, loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Add R² and correlation info as text</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="fl">0.05</span>, <span class="fl">0.95</span>, <span class="ss">f'R² = </span><span class="sc">{</span>r2_sklearn<span class="sc">:.6f}</span><span class="ch">\n</span><span class="ss">Correlation = </span><span class="sc">{</span>observDF[<span class="st">"StressSurvey"</span>]<span class="sc">.</span>corr(observDF[<span class="st">"Anxiety"</span>])<span class="sc">:.6f}</span><span class="ss">'</span>, </span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>         transform<span class="op">=</span>plt.gca().transAxes, fontsize<span class="op">=</span><span class="dv">10</span>, </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>         verticalalignment<span class="op">=</span><span class="st">'top'</span>, bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">'round'</span>, facecolor<span class="op">=</span><span class="st">'wheat'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>))</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Set axis limits and ticks</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">12.5</span>)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="op">-</span><span class="fl">0.2</span>, <span class="fl">12.5</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">13</span>, <span class="dv">2</span>))</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>plt.yticks(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">13</span>, <span class="dv">2</span>))</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Improve layout</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Additional analysis for the plot</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== PLOT ANALYSIS ==="</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of data points: </span><span class="sc">{</span><span class="bu">len</span>(observDF)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data points per StressSurvey value: </span><span class="sc">{</span><span class="bu">len</span>(observDF) <span class="op">//</span> <span class="bu">len</span>(observDF[<span class="st">'StressSurvey'</span>].unique())<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"StressSurvey range: </span><span class="sc">{</span>observDF[<span class="st">'StressSurvey'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>observDF[<span class="st">'StressSurvey'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Anxiety range: </span><span class="sc">{</span>observDF[<span class="st">'Anxiety'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.2f}</span><span class="ss"> to </span><span class="sc">{</span>observDF[<span class="st">'Anxiety'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Residuals (actual - predicted): </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(y <span class="op">-</span> y_pred, <span class="dv">6</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Max absolute residual: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(np.<span class="bu">abs</span>(y <span class="op">-</span> y_pred))<span class="sc">:.6f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-5-output-1.png" width="951" height="756" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== PLOT ANALYSIS ===
+Number of data points: 15
+Data points per StressSurvey value: 3
+StressSurvey range: 0 to 12
+Anxiety range: 0.00 to 12.22
+Residuals (actual - predicted): 0     1.524
+1     1.624
+2     1.624
+3    -0.517
+4    -0.517
+5    -0.517
+6    -2.558
+7    -2.558
+8    -2.558
+9     0.301
+10    0.301
+11    0.311
+12    1.180
+13    1.180
+14    1.180
+Name: Anxiety, dtype: float64
+Max absolute residual: 2.558000</code></pre>
+</div>
+</div>
+</section>
+<section id="analysis-of-the-scatter-plot" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-the-scatter-plot">2. Analysis of the scatter plot</h3>
+<p>On this new scatter plot, the regression analysis shows issues that linear regression cannot capture. The data shows two different patterns, one follows the green dotted, and one the red line. I think this is misleading since the correlation coefficient is 0.949 which looks very impressive. But the regression line actually misses most of the data points. This shows that you cannot blindly trust correlation coefficients. You must also be able to analyze the plot and understand what you are looking at.</p>
 </section>
 </section>
 </section>
