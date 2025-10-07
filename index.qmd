@@ -14,7 +14,7 @@ execute:
 ## Python Code
 
 ```{python}
-#| echo: true
+#| echo: false
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -42,7 +42,7 @@ Follow the challenge instructions from your course to complete your analysis.
 ### Bivariate Regression: Anxiety on StressSurvey
 
 ```{python}
-#| echo: true
+#| echo: false
 # Bivariate regression of Anxiety on StressSurvey
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
@@ -100,7 +100,7 @@ plt.show()
 ### Analysis and Inferences
 
 ```{python}
-#| echo: true
+#| echo: false
 # Analysis of the regression results
 print("=== REGRESSION ANALYSIS ===")
 print(f"Estimated equation: Anxiety = {slope_sklearn:.4f} × StressSurvey + {intercept_sklearn:.4f}")
@@ -135,7 +135,7 @@ print(f"Average Time effect: {time_effect:.4f}")
 The estimated coefficients are a Slope of 0.3333, which is exactly what we got in this example. The R-squared is perfect which shows that the linear relationship is captured perfectly. There is a slight difference in the intercept as it was about 0.033 instead of an expected 0.02. This is because the average Time effect is 0.1 which is added to the intercept.
 
 ```{python}
-#| echo: true
+#| echo: false
 # Scatter plot with regression line: StressSurvey vs Anxiety
 plt.figure(figsize=(10, 8))
 
@@ -197,7 +197,7 @@ On this new scatter plot, the regression analysis shows issues that linear regre
 ### Bivariate Regression: Anxiety on Time
 
 ```{python}
-#| echo: true
+#| echo: false
 # Bivariate regression of Anxiety on Time
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
@@ -267,7 +267,7 @@ This scatter plot is a perfect example of why visualization matters in regressio
 ### Multiple Regression: Anxiety on StressSurvey and Time
 
 ```{python}
-#| echo: true
+#| echo: false
 # Multiple regression of Anxiety on StressSurvey and Time
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
@@ -343,3 +343,221 @@ print(f"Improvement: {r2_multiple - max(r2_sklearn, r2_time):.4f}")
 ### Analysis of Multiple Regression Coefficients
 
 The StressSurvey coefficient being 0.333, captures the relationship between StressSurvey and the true Stress variable. Our estimated coefficent mathes the expectation with the model. The Time coefficient being 0.1, captures the relationship between Time and Anxiety. This is now being shown since we have included both relevant predictors. This works well in this scenario because it includes both components of the true relationship. Unlinke the bivariate regressions that were missing key variables, this model has all the necessary information to reconstruct the true relationship. 
+
+## 85% Questions:
+
+### Multiple Regression: Anxiety on Stress and Time
+
+```{python}
+#| echo: false
+# Multiple regression of Anxiety on Stress and Time (using the true Stress variable)
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+import statsmodels.api as sm
+
+# Prepare data for multiple regression using the true Stress variable
+X_true_stress = observDF[['Stress', 'Time']]  # Independent variables: Stress and Time
+y_anxiety = observDF['Anxiety']  # Dependent variable
+
+# Method 1: Using scikit-learn
+lr_true_stress = LinearRegression()
+lr_true_stress.fit(X_true_stress, y_anxiety)
+y_pred_true_stress = lr_true_stress.predict(X_true_stress)
+
+# Get coefficients
+intercept_true_stress = lr_true_stress.intercept_
+stress_coef_true = lr_true_stress.coef_[0]  # Stress coefficient
+time_coef_true = lr_true_stress.coef_[1]    # Time coefficient
+r2_true_stress = r2_score(y_anxiety, y_pred_true_stress)
+
+print("=== Multiple Regression: Anxiety on Stress and Time (True Variables) ===")
+print(f"Intercept (β₀): {intercept_true_stress:.4f}")
+print(f"Stress coefficient (β₁): {stress_coef_true:.4f}")
+print(f"Time coefficient (β₂): {time_coef_true:.4f}")
+print(f"R²: {r2_true_stress:.4f}")
+print(f"Estimated equation: Anxiety = {stress_coef_true:.4f} × Stress + {time_coef_true:.4f} × Time + {intercept_true_stress:.4f}")
+
+# Method 2: Using statsmodels for more detailed statistics
+X_sm_true_stress = sm.add_constant(X_true_stress)  # Add intercept term
+model_true_stress = sm.OLS(y_anxiety, X_sm_true_stress).fit()
+print("\n=== Statsmodels Results ===")
+print(model_true_stress.summary())
+
+# Calculate residuals and other metrics
+residuals_true_stress = y_anxiety - y_pred_true_stress
+mse_true_stress = mean_squared_error(y_anxiety, y_pred_true_stress)
+rmse_true_stress = np.sqrt(mse_true_stress)
+
+print(f"\n=== Additional Metrics ===")
+print(f"Mean Squared Error: {mse_true_stress:.4f}")
+print(f"Root Mean Squared Error: {rmse_true_stress:.4f}")
+print(f"Mean Absolute Error: {np.mean(np.abs(residuals_true_stress)):.4f}")
+
+# Compare with true relationship
+print(f"\n=== COMPARISON WITH TRUE RELATIONSHIP ===")
+print("True relationship: Anxiety = Stress + 0.1 × Time")
+print(f"Expected Stress coefficient: 1.0000")
+print(f"Actual Stress coefficient: {stress_coef_true:.4f}")
+print(f"Expected Time coefficient: 0.1000")
+print(f"Actual Time coefficient: {time_coef_true:.4f}")
+print(f"Expected intercept: 0.0000")
+print(f"Actual intercept: {intercept_true_stress:.4f}")
+
+# Visualize the multiple regression results
+plt.figure(figsize=(10, 6))
+plt.scatter(y_anxiety, y_pred_true_stress, alpha=0.7, s=60, color='steelblue', edgecolors='navy', linewidth=0.5)
+plt.plot([y_anxiety.min(), y_anxiety.max()], [y_anxiety.min(), y_anxiety.max()], 'r--', linewidth=2, label='Perfect Fit')
+plt.xlabel('Actual Anxiety', fontsize=12, fontweight='bold')
+plt.ylabel('Predicted Anxiety', fontsize=12, fontweight='bold')
+plt.title('Actual vs Predicted Anxiety\nMultiple Regression: Stress + Time', fontsize=14, fontweight='bold', pad=20)
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+print(f"\n=== MODEL PERFORMANCE COMPARISON ===")
+print(f"Multiple regression (StressSurvey + Time) R²: {r2_multiple:.4f}")
+print(f"Multiple regression (Stress + Time) R²: {r2_true_stress:.4f}")
+print(f"Difference: {abs(r2_true_stress - r2_multiple):.6f}")
+```
+
+This multiple regression using the actual Stress and Time variables should demonstrate near-perfect alignment with the true relationship. Since we are now using te exact same variables that were used to generate the Anxiety values, the estimated coefficients should be virtually identical to the theoretical coefficients. This regression has a perfect 1.0 R-squared. Showing that when we have access to all the underlying variables, multiple regression can perfectly recover the data-generating process. This stands in contrast to the previous regressions that either omitted key variables or used imperfect measures, demonstrating the critical importance of having the right variables in your model rather than just statistically significant coefficients.
+
+The R-squared values of Model 1 was 0.9350, and Model 2 shows a perfect 1.0. Model 1 has StressSurvey coefficient of 0.33 and a Time coefficient of 0.1. Model 2 had a stress coefficient of 1.0 and a time coefficient of 0.1. Although both models showed highly significant coefficients, this is misleading because the relationships are deterministic, the sample size is adequate, and there is little noise. This opens up a world for me in realizing the real-world implications of using multiple regression, we can see that both models look like they are good fit and are statistically significant, but they give different interpretations of the phenomenon. Without knowing the true relationship, you might pick the "wrong" model. Statistical significance alone does not guarantee a correct model, both models are significant, but only one uses the true variables. The big lesson here being that multiple regression can give you statisticall valid models that are objectively wrong. The "garbage can" isn't about bad statistics, it's about having the right variables. 
+
+## 95% Questions:
+
+# Model 1: "Research: Time Spent Online Contributes Less to Anxiety Than Previously Thought"
+
+# Model 2: "Research Confirms: More Time Online = More Anxiety"
+
+Typical parents will believe Model 1 because it validates their hope that social media isn't as harmful as they fear. As well as the smaller coefficient making them feel better about their own and their kids' usage. Also, suggesting that other factors (stress) are more important than screen time, lets parents believe social media isn't that bad, which is confirmation bias. The social media companies would much prefer Model 1 as it minimizes the perceived impact of time spent on their platforms, and suggests the real problem is stress. It also allows them to deny any claims about the impact of social media on mental health. The reality is that Model 1 allows social media companies to deflect blame and parents feel less guilty about screen time for their kids. While model 2 calls for limits on social media, pressures platform designers for change, causes potential regulatory intervention, and raises concerns from parents. 
+
+## 100% Questions:
+
+### Avoiding Misleading Results Through Smart Subset Analysis
+
+```{python}
+#| echo: false
+# Split sample into meaningful subsets to avoid being misled by statistically significant results
+# Let's analyze different "statistical regimes" in the data
+
+# First, let's examine the data structure to identify meaningful subsets
+print("=== DATA STRUCTURE ANALYSIS ===")
+print("Unique Stress values:", sorted(observDF['Stress'].unique()))
+print("Unique Time values:", sorted(observDF['Time'].unique()))
+print("Data points per Stress level:")
+for stress_level in sorted(observDF['Stress'].unique()):
+    subset = observDF[observDF['Stress'] == stress_level]
+    print(f"  Stress {stress_level}: {len(subset)} observations, Time range: {subset['Time'].min():.1f}-{subset['Time'].max():.1f}")
+
+# Smart subset choice: Focus on observations where Stress = 0
+# This subset isolates the Time effect without the confounding Stress effect
+print(f"\n=== SUBSET ANALYSIS: Stress = 0 (Pure Time Effect) ===")
+subset_stress0 = observDF[observDF['Stress'] == 0].copy()
+print(f"Subset size: {len(subset_stress0)} observations")
+print("Subset data:")
+print(subset_stress0[['Stress', 'Time', 'Anxiety']])
+
+# Multiple regression on this subset
+X_subset = subset_stress0[['StressSurvey', 'Time']]
+y_subset = subset_stress0['Anxiety']
+
+# Fit model on subset
+lr_subset = LinearRegression()
+lr_subset.fit(X_subset, y_subset)
+y_pred_subset = lr_subset.predict(X_subset)
+
+# Get coefficients
+intercept_subset = lr_subset.intercept_
+stresssurvey_coef_subset = lr_subset.coef_[0]
+time_coef_subset = lr_subset.coef_[1]
+r2_subset = r2_score(y_subset, y_pred_subset)
+
+print(f"\n=== SUBSET REGRESSION RESULTS ===")
+print(f"Intercept: {intercept_subset:.4f}")
+print(f"StressSurvey coefficient: {stresssurvey_coef_subset:.4f}")
+print(f"Time coefficient: {time_coef_subset:.4f}")
+print(f"R²: {r2_subset:.4f}")
+print(f"Equation: Anxiety = {stresssurvey_coef_subset:.4f} × StressSurvey + {time_coef_subset:.4f} × Time + {intercept_subset:.4f}")
+
+# Compare with true relationship in this subset
+# When Stress = 0, the true relationship becomes: Anxiety = 0 + 0.1 × Time
+print(f"\n=== COMPARISON WITH TRUE RELATIONSHIP ===")
+print("True relationship when Stress = 0: Anxiety = 0.1 × Time")
+print(f"Expected Time coefficient: 0.1000")
+print(f"Actual Time coefficient: {time_coef_subset:.4f}")
+print(f"Difference: {abs(time_coef_subset - 0.1):.4f}")
+
+# Visualize the subset analysis
+plt.figure(figsize=(12, 5))
+
+# Plot 1: Original full data
+plt.subplot(1, 2, 1)
+plt.scatter(observDF['Time'], observDF['Anxiety'], alpha=0.7, s=60, color='lightblue', label='All Data')
+plt.scatter(subset_stress0['Time'], subset_stress0['Anxiety'], alpha=0.9, s=80, color='red', label='Stress = 0 Subset')
+plt.xlabel('Time')
+plt.ylabel('Anxiety')
+plt.title('Full Data vs Stress = 0 Subset')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+# Plot 2: Subset regression
+plt.subplot(1, 2, 2)
+plt.scatter(subset_stress0['Time'], subset_stress0['Anxiety'], alpha=0.8, s=80, color='red', label='Actual Data')
+plt.plot(subset_stress0['Time'], y_pred_subset, color='blue', linewidth=2, label=f'Regression: y = {time_coef_subset:.3f}x + {intercept_subset:.3f}')
+plt.xlabel('Time')
+plt.ylabel('Anxiety')
+plt.title('Subset Regression: Stress = 0')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+# Alternative subset: High Stress observations
+print(f"\n=== ALTERNATIVE SUBSET: High Stress (Stress ≥ 8) ===")
+subset_high_stress = observDF[observDF['Stress'] >= 8].copy()
+print(f"Subset size: {len(subset_high_stress)} observations")
+print("Subset data:")
+print(subset_high_stress[['Stress', 'StressSurvey', 'Time', 'Anxiety']])
+
+# Regression on high stress subset
+X_high = subset_high_stress[['StressSurvey', 'Time']]
+y_high = subset_high_stress['Anxiety']
+
+lr_high = LinearRegression()
+lr_high.fit(X_high, y_high)
+y_pred_high = lr_high.predict(X_high)
+
+print(f"High Stress Subset Results:")
+print(f"StressSurvey coefficient: {lr_high.coef_[0]:.4f}")
+print(f"Time coefficient: {lr_high.coef_[1]:.4f}")
+print(f"R²: {r2_score(y_high, y_pred_high):.4f}")
+
+print(f"\n=== KEY INSIGHTS FROM SUBSET ANALYSIS ===")
+print("1. Stress = 0 subset isolates the pure Time effect")
+print("2. This subset should show Time coefficient ≈ 0.1 (the true coefficient)")
+print("3. StressSurvey coefficient should be ≈ 0 (since Stress = 0)")
+print("4. This approach reveals the true Time effect without Stress confounding")
+```
+
+### Reflection on Subset Analysis
+**Alternative Analysis - High Stress Subset (Stress ≥ 8):**
+
+We're looking at observations where Stress is 8 or 12, representing the highest stress levels. In this subset, the true relationship becomes 'Anxiety = Stress + 0.1 × Time', but since Stress is high and constant within each group, we can see how Time affects Anxiety at high stress levels. This tests whether the Time effect is consistent across different stress levels
+
+The high-stress subset analysis reveals that:
+- The Time coefficient remains close to 0.1, confirming the consistency of the Time effect across stress levels
+- The StressSurvey coefficient reflects the strong relationship between StressSurvey and Anxiety at high stress levels
+- R² is very high, showing the model fits well even in this constrained subset
+
+This demonstrates that the Time effect is robust across different "statistical regimes" - whether we look at low-stress or high-stress observations, Time consistently adds 0.1 units to Anxiety for each unit increase in Time.
+
+**Why This Approach Works:**
+This subset analysis demonstrates how smart data partitioning can reveal the true underlying relationships that get obscured when variables are correlated. Instead of blindly trusting the full-sample regression results, we can use domain knowledge to create meaningful statistical regimes that test our assumptions and reveal the true data-generating process.
+
+**Real-World Application:**
+In practice, researchers should always consider subset analysis to validate their regression results. This approach helps avoid the "garbage can" problem by testing whether relationships hold consistently across different data regimes, rather than relying solely on statistical significance from the full sample.
+
+
