@@ -193,3 +193,152 @@ print(f"Max absolute residual: {np.max(np.abs(y - y_pred)):.6f}")
 ### 2. Analysis of the scatter plot
 
 On this new scatter plot, the regression analysis shows issues that linear regression cannot capture. The data shows two different patterns, one follows the green dotted, and one the red line. I think this is misleading since the correlation coefficient is 0.949 which looks very impressive. But the regression line actually misses most of the data points. This shows that you cannot blindly trust correlation coefficients. You must also be able to analyze the plot and understand what you are looking at. 
+
+### Bivariate Regression: Anxiety on Time
+
+```{python}
+#| echo: true
+# Bivariate regression of Anxiety on Time
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+import statsmodels.api as sm
+
+# Prepare data for regression
+X_time = observDF[['Time']]  # Independent variable
+y_anxiety = observDF['Anxiety']  # Dependent variable
+
+# Method 1: Using scikit-learn
+lr_time = LinearRegression()
+lr_time.fit(X_time, y_anxiety)
+y_pred_time = lr_time.predict(X_time)
+
+# Get coefficients
+intercept_time = lr_time.intercept_
+slope_time = lr_time.coef_[0]
+r2_time = r2_score(y_anxiety, y_pred_time)
+
+print("=== Bivariate Regression: Anxiety on Time ===")
+print(f"Intercept (β₀): {intercept_time:.4f}")
+print(f"Slope (β₁): {slope_time:.4f}")
+print(f"R²: {r2_time:.4f}")
+print(f"Estimated equation: Anxiety = {slope_time:.4f} × Time + {intercept_time:.4f}")
+
+# Method 2: Using statsmodels for more detailed statistics
+X_sm_time = sm.add_constant(X_time)  # Add intercept term
+model_time = sm.OLS(y_anxiety, X_sm_time).fit()
+print("\n=== Statsmodels Results ===")
+print(model_time.summary())
+
+# Calculate residuals and other metrics
+residuals_time = y_anxiety - y_pred_time
+mse_time = mean_squared_error(y_anxiety, y_pred_time)
+rmse_time = np.sqrt(mse_time)
+
+print(f"\n=== Additional Metrics ===")
+print(f"Mean Squared Error: {mse_time:.4f}")
+print(f"Root Mean Squared Error: {rmse_time:.4f}")
+print(f"Mean Absolute Error: {np.mean(np.abs(residuals_time)):.4f}")
+
+# Visualize the relationship
+plt.figure(figsize=(10, 6))
+plt.scatter(observDF['Time'], observDF['Anxiety'], alpha=0.7, s=60, color='steelblue', edgecolors='navy', linewidth=0.5, label='Actual Data')
+plt.plot(observDF['Time'], y_pred_time, color='red', linewidth=3, label=f'Regression Line (y = {slope_time:.3f}x + {intercept_time:.3f})')
+plt.xlabel('Time', fontsize=12, fontweight='bold')
+plt.ylabel('Anxiety', fontsize=12, fontweight='bold')
+plt.title('Bivariate Regression: Anxiety on Time', fontsize=14, fontweight='bold', pad=20)
+plt.legend(fontsize=10)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# Analysis of the Time-Anxiety relationship
+print(f"\n=== ANALYSIS OF TIME-ANXIETY RELATIONSHIP ===")
+print(f"Correlation between Time and Anxiety: {observDF['Time'].corr(observDF['Anxiety']):.4f}")
+print(f"Time range: {observDF['Time'].min():.2f} to {observDF['Time'].max():.2f}")
+print(f"Anxiety range: {observDF['Anxiety'].min():.2f} to {observDF['Anxiety'].max():.2f}")
+print(f"Number of unique Time values: {len(observDF['Time'].unique())}")
+print(f"Residuals: {np.round(residuals_time, 4)}")
+```
+
+We can see here in this bivariate regression that the correlation between Time and Anxiety is 0.7504. This doesn't give the full picture, it accurately estimates the linear relationship between time and anxiety. It misses the main variable that drives the relationship, which is Stress. Using time as the only predictor is only a small piece of the equation and is the reason for a low R-squared. This happens since most of Anxiety's variation comes from Stress, not time. 
+
+This scatter plot is a perfect example of why visualization matters in regression analysis. The correlation of 0.7504 might seem reasonably strong, but the visual tells the true story. There's too much unexplained variation for this to be a useful predictive model.
+
+### Multiple Regression: Anxiety on StressSurvey and Time
+
+```{python}
+#| echo: true
+# Multiple regression of Anxiety on StressSurvey and Time
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+import statsmodels.api as sm
+
+# Prepare data for multiple regression
+X_multiple = observDF[['StressSurvey', 'Time']]  # Independent variables
+y_anxiety = observDF['Anxiety']  # Dependent variable
+
+# Method 1: Using scikit-learn
+lr_multiple = LinearRegression()
+lr_multiple.fit(X_multiple, y_anxiety)
+y_pred_multiple = lr_multiple.predict(X_multiple)
+
+# Get coefficients
+intercept_multiple = lr_multiple.intercept_
+stress_coef = lr_multiple.coef_[0]  # StressSurvey coefficient
+time_coef = lr_multiple.coef_[1]    # Time coefficient
+r2_multiple = r2_score(y_anxiety, y_pred_multiple)
+
+print("=== Multiple Regression: Anxiety on StressSurvey and Time ===")
+print(f"Intercept (β₀): {intercept_multiple:.4f}")
+print(f"StressSurvey coefficient (β₁): {stress_coef:.4f}")
+print(f"Time coefficient (β₂): {time_coef:.4f}")
+print(f"R²: {r2_multiple:.4f}")
+print(f"Estimated equation: Anxiety = {stress_coef:.4f} × StressSurvey + {time_coef:.4f} × Time + {intercept_multiple:.4f}")
+
+# Method 2: Using statsmodels for more detailed statistics
+X_sm_multiple = sm.add_constant(X_multiple)  # Add intercept term
+model_multiple = sm.OLS(y_anxiety, X_sm_multiple).fit()
+print("\n=== Statsmodels Results ===")
+print(model_multiple.summary())
+
+# Calculate residuals and other metrics
+residuals_multiple = y_anxiety - y_pred_multiple
+mse_multiple = mean_squared_error(y_anxiety, y_pred_multiple)
+rmse_multiple = np.sqrt(mse_multiple)
+
+print(f"\n=== Additional Metrics ===")
+print(f"Mean Squared Error: {mse_multiple:.4f}")
+print(f"Root Mean Squared Error: {rmse_multiple:.4f}")
+print(f"Mean Absolute Error: {np.mean(np.abs(residuals_multiple)):.4f}")
+
+# Compare with true relationship
+print(f"\n=== COMPARISON WITH TRUE RELATIONSHIP ===")
+print("True relationship: Anxiety = Stress + 0.1 × Time")
+print("Since StressSurvey = 3 × Stress, then Stress = StressSurvey/3")
+print("So the true relationship becomes: Anxiety = (1/3) × StressSurvey + 0.1 × Time")
+print(f"Expected StressSurvey coefficient: {1/3:.4f}")
+print(f"Actual StressSurvey coefficient: {stress_coef:.4f}")
+print(f"Expected Time coefficient: 0.1000")
+print(f"Actual Time coefficient: {time_coef:.4f}")
+
+# Visualize the multiple regression results
+plt.figure(figsize=(10, 6))
+plt.scatter(y_anxiety, y_pred_multiple, alpha=0.7, s=60, color='steelblue', edgecolors='navy', linewidth=0.5)
+plt.plot([y_anxiety.min(), y_anxiety.max()], [y_anxiety.min(), y_anxiety.max()], 'r--', linewidth=2, label='Perfect Fit')
+plt.xlabel('Actual Anxiety', fontsize=12, fontweight='bold')
+plt.ylabel('Predicted Anxiety', fontsize=12, fontweight='bold')
+plt.title('Actual vs Predicted Anxiety\nMultiple Regression Model', fontsize=14, fontweight='bold', pad=20)
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+print(f"\n=== MODEL PERFORMANCE COMPARISON ===")
+print(f"Bivariate (StressSurvey only) R²: {r2_sklearn:.4f}")
+print(f"Bivariate (Time only) R²: {r2_time:.4f}")
+print(f"Multiple regression R²: {r2_multiple:.4f}")
+print(f"Improvement: {r2_multiple - max(r2_sklearn, r2_time):.4f}")
+```
+
+The StressSurvey coefficient being 0.333, captures the relationship btween StressSurvey and the true Stress variable. Our estimated coefficient matches the expecation with the model. The Time coefficient being 0.1, captures the relationship between Time and Anxiety, and should be 0.1 based on the true relationship. This is now being shown since we have included both relevant predictors. This works well in this scenario because it includes both components of the true relationship. Unlike the bivariate regressions that were missing key variables, this model has all the necessary information to reconstruct the true relationship.
+
