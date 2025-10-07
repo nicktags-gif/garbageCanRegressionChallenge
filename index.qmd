@@ -340,5 +340,6 @@ print(f"Multiple regression R²: {r2_multiple:.4f}")
 print(f"Improvement: {r2_multiple - max(r2_sklearn, r2_time):.4f}")
 ```
 
-The StressSurvey coefficient being 0.333, captures the relationship btween StressSurvey and the true Stress variable. Our estimated coefficient matches the expecation with the model. The Time coefficient being 0.1, captures the relationship between Time and Anxiety, and should be 0.1 based on the true relationship. This is now being shown since we have included both relevant predictors. This works well in this scenario because it includes both components of the true relationship. Unlike the bivariate regressions that were missing key variables, this model has all the necessary information to reconstruct the true relationship.
+### Analysis of Multiple Regression Coefficients
 
+The StressSurvey coefficient being 0.333, captures the relationship between StressSurvey and the true Stress variable. Our estimated coefficent mathes the expectation with the model. The Time coefficient being 0.1, captures the relationship between Time and Anxiety. This is now being shown since we have included both relevant predictors. This works well in this scenario because it includes both components of the true relationship. Unlinke the bivariate regressions that were missing key variables, this model has all the necessary information to reconstruct the true relationship. 

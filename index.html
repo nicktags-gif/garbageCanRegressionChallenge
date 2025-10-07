@@ -104,7 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Choose R or Python and delete the other code chunk.</strong></p>
 <section id="python-code" class="level2">
 <h2 class="anchored" data-anchor-id="python-code">Python Code</h2>
-<div id="f9cd4e55" class="cell" data-execution_count="1">
+<div id="0d69aa62" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -148,7 +148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Follow the challenge instructions from your course to complete your analysis.</p>
 <section id="bivariate-regression-anxiety-on-stresssurvey" class="level3">
 <h3 class="anchored" data-anchor-id="bivariate-regression-anxiety-on-stresssurvey">Bivariate Regression: Anxiety on StressSurvey</h3>
-<div id="331b6f75" class="cell" data-execution_count="2">
+<div id="41973ea1" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bivariate regression of Anxiety on StressSurvey</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score, mean_squared_error</span>
@@ -214,7 +214,7 @@ Dep. Variable:                Anxiety   R-squared:                       0.901
 Model:                            OLS   Adj. R-squared:                  0.893
 Method:                 Least Squares   F-statistic:                     118.4
 Date:                Tue, 07 Oct 2025   Prob (F-statistic):           6.68e-08
-Time:                        13:00:47   Log-Likelihood:                -27.079
+Time:                        13:07:07   Log-Likelihood:                -27.079
 No. Observations:                  15   AIC:                             58.16
 Df Residuals:                      13   BIC:                             59.57
 Df Model:                           1                                         
@@ -258,7 +258,7 @@ kurtosistest only valid for n&gt;=20 ... continuing anyway, n=15
 </section>
 <section id="analysis-and-inferences" class="level3">
 <h3 class="anchored" data-anchor-id="analysis-and-inferences">Analysis and Inferences</h3>
-<div id="0cde8807" class="cell" data-execution_count="3">
+<div id="79e076ea" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analysis of the regression results</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== REGRESSION ANALYSIS ==="</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Estimated equation: Anxiety = </span><span class="sc">{</span>slope_sklearn<span class="sc">:.4f}</span><span class="ss"> × StressSurvey + </span><span class="sc">{</span>intercept_sklearn<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
@@ -307,7 +307,7 @@ Average Time effect: 0.1580</code></pre>
 <section id="what-are-the-estimated-coefficients" class="level3">
 <h3 class="anchored" data-anchor-id="what-are-the-estimated-coefficients">1. What are the estimated coefficients?</h3>
 <p>The estimated coefficients are a Slope of 0.3333, which is exactly what we got in this example. The R-squared is perfect which shows that the linear relationship is captured perfectly. There is a slight difference in the intercept as it was about 0.033 instead of an expected 0.02. This is because the average Time effect is 0.1 which is added to the intercept.</p>
-<div id="f080e5cf" class="cell" data-execution_count="4">
+<div id="6c6d984d" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot with regression line: StressSurvey vs Anxiety</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -399,7 +399,7 @@ Max absolute residual: 2.558000</code></pre>
 </section>
 <section id="bivariate-regression-anxiety-on-time" class="level3">
 <h3 class="anchored" data-anchor-id="bivariate-regression-anxiety-on-time">Bivariate Regression: Anxiety on Time</h3>
-<div id="fb1c5c5c" class="cell" data-execution_count="5">
+<div id="283894e2" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bivariate regression of Anxiety on Time</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score, mean_squared_error</span>
@@ -474,7 +474,7 @@ Dep. Variable:                Anxiety   R-squared:                       0.563
 Model:                            OLS   Adj. R-squared:                  0.529
 Method:                 Least Squares   F-statistic:                     16.75
 Date:                Tue, 07 Oct 2025   Prob (F-statistic):            0.00127
-Time:                        13:00:48   Log-Likelihood:                -38.223
+Time:                        13:07:07   Log-Likelihood:                -38.223
 No. Observations:                  15   AIC:                             80.45
 Df Residuals:                      13   BIC:                             81.86
 Df Model:                           1                                         
@@ -542,7 +542,7 @@ Name: Anxiety, dtype: float64</code></pre>
 </section>
 <section id="multiple-regression-anxiety-on-stresssurvey-and-time" class="level3">
 <h3 class="anchored" data-anchor-id="multiple-regression-anxiety-on-stresssurvey-and-time">Multiple Regression: Anxiety on StressSurvey and Time</h3>
-<div id="1be77312" class="cell" data-execution_count="6">
+<div id="1a5fd402" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Multiple regression of Anxiety on StressSurvey and Time</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score, mean_squared_error</span>
@@ -628,7 +628,7 @@ Dep. Variable:                Anxiety   R-squared:                       0.935
 Model:                            OLS   Adj. R-squared:                  0.924
 Method:                 Least Squares   F-statistic:                     86.32
 Date:                Tue, 07 Oct 2025   Prob (F-statistic):           7.54e-08
-Time:                        13:00:48   Log-Likelihood:                -23.931
+Time:                        13:07:07   Log-Likelihood:                -23.931
 No. Observations:                  15   AIC:                             53.86
 Df Residuals:                      12   BIC:                             55.99
 Df Model:                           2                                         
@@ -685,6 +685,10 @@ Multiple regression R²: 0.9350
 Improvement: 0.0339</code></pre>
 </div>
 </div>
+</section>
+<section id="analysis-of-multiple-regression-coefficients" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-multiple-regression-coefficients">Analysis of Multiple Regression Coefficients</h3>
+<p>The StressSurvey coefficient being 0.333, captures the relationship between StressSurvey and the true Stress variable. Our estimated coefficent mathes the expectation with the model. The Time coefficient being 0.1, captures the relationship between Time and Anxiety. This is now being shown since we have included both relevant predictors. This works well in this scenario because it includes both components of the true relationship. Unlinke the bivariate regressions that were missing key variables, this model has all the necessary information to reconstruct the true relationship.</p>
 </section>
 </section>
 </section>
